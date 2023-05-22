@@ -4,7 +4,7 @@ DATE=`date '+%Y%m%d_%H%M'`
 DATE1=`date '+%Y%m%d_%H%M%S'`
 export ORACLE_SID=$1
 export ADG=$2
-export script_dir='/home/oracle/scripts'
+export script_dir='/home/oracle/stage'
 export log_dir="$script_dir/log"
 export log_file="$log_dir/$1_dg_enable_sync_$DATE.log"
 export lock_file="$script_dir/dg_sync_$ORACLE_SID.lock"
@@ -97,7 +97,8 @@ fi
 
 check_instance_state()
 {
-DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "sys/$pass@$1 as sysdba" << EOF
+#DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "sys/$pass@$1 as sysdba" << EOF
+DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "/ as sysdba" << EOF
                 set pages 0 lin 150 feed off ver off head off echo off;
                                 SET TRIMOUT ON;
                                 SET TRIMSPOOL ON;
@@ -124,7 +125,8 @@ fi
 
 check_db_role()
 {
-DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "sys/$pass@$1 as sysdba" << EOF
+#DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "sys/$pass@$1 as sysdba" << EOF
+DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "/ as sysdba" << EOF
                 set pages 0 lin 150 feed off ver off head off echo off;
                                 SET TRIMOUT ON;
                                 SET TRIMSPOOL ON;
@@ -270,7 +272,7 @@ fi
 
 
 
-#Disable DG sync for ActiveDataGurad
+#Enable DG sync for ActiveDataGurad
 dg_enable_adg()
 {
 export adglog="$log_dir/adglog_`date '+%Y%m%d_%H%M%S'`.log"
@@ -287,6 +289,7 @@ if [ $adg_status = 1 ];then
    		echo "Error" 
 fi
 }
+
 verify_lockfile()
 {
 if test -r $lock_file

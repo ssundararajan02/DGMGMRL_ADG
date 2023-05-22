@@ -4,7 +4,7 @@ DATE=`date '+%Y%m%d_%H%M'`
 DATE1=`date '+%Y%m%d_%H%M%S'`
 export ORACLE_SID=$1
 export ADG=$2
-export script_dir='/home/oracle/scripts'
+export script_dir='/home/oracle/stage'
 export log_dir="$script_dir/log"
 export log_file="$log_dir/$1_dg_disable_sync_$DATE.log"
 export lock_file="$script_dir/dg_sync_$ORACLE_SID.lock"
@@ -14,7 +14,8 @@ export EMAILLIST='suresh.sundararajan@gilead.com'
 prereq_check()
 {
 if [ $# -ne 2 ]; then
-        echo -e "\n \t Error in running the script \n Script Usage $0 <SID> <DR Name>\n" >> $log_file
+        echo -e "\n \t Error in running the script \n Script Usage $0 <SID> <DR Name>\n
+        Example: $0 ARGI8DEV SJ_ARGI8DEV_ADG" >> $log_file
         echo "Error"
         exit 1
    else
@@ -97,7 +98,8 @@ fi
 
 check_instance_state()
 {
-DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "sys/$pass@$1 as sysdba" << EOF
+#DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "sys/$pass@$1 as sysdba" << EOF
+DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "/ as sysdba" << EOF
                 set pages 0 lin 150 feed off ver off head off echo off;
                                 SET TRIMOUT ON;
                                 SET TRIMSPOOL ON;
@@ -124,7 +126,8 @@ fi
 
 check_db_role()
 {
-DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "sys/$pass@$1 as sysdba" << EOF
+#DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "sys/$pass@$1 as sysdba" << EOF
+DBSTAT=$($ORACLE_HOME/bin/sqlplus -s "/ as sysdba" << EOF
                 set pages 0 lin 150 feed off ver off head off echo off;
                                 SET TRIMOUT ON;
                                 SET TRIMSPOOL ON;
@@ -153,7 +156,8 @@ fi
 mount_db()
 {
 export failoverlog="$log_dir/failoverlog_`date '+%Y%m%d_%H%M%S'`.log"
-$ORACLE_HOME/bin/sqlplus -s "sys/$pass@$1 as sysdba" << EOF >> $failoverlog
+#$ORACLE_HOME/bin/sqlplus -s "sys/$pass@$1 as sysdba" << EOF >> $failoverlog
+$ORACLE_HOME/bin/sqlplus -s "/ as sysdba" << EOF >> $failoverlog
 startup mount;
 exit;
 EOF
