@@ -297,9 +297,9 @@ POST_ETL=$($ORACLE_HOME/bin/sqlplus -s "/ as sysdba" << EOF
                                 SET TRIMOUT ON;
                                 SET TRIMSPOOL ON;
                 col value for a150
---select (case when to_char(max(LOG_DATE),'DD-MON-YYYY HH24:MI') > to_char(sysdate-20/1440,'DD-MON-YYYY HH24:MI') then 'TRUE' Else 'FALSE' END)   from GILEAD_AI.GILEAD_ETL_LOG where LOG_DESC ='Complete p_post_etl - INCREMENTAL';
+select (case when to_char(max(LOG_DATE),'DD-MON-YYYY HH24:MI') > to_char(sysdate-20/1440,'DD-MON-YYYY HH24:MI') then 'TRUE' Else 'FALSE' END)   from GILEAD_AI.GILEAD_ETL_LOG where LOG_DESC ='Complete p_post_etl - INCREMENTAL';
 --select (case when max(LOG_DATE) > (sysdate-15/1440) then 'TRUE' Else 'FALSE' END)   from GILEAD_AI.GILEAD_ETL_LOG where LOG_DESC ='Complete p_post_etl - INCREMENTAL';
-select (case when 3 > (select round(dbms_random.value(1,7),0) from dual)  then 'TRUE' Else 'FALSE' END) from dual;                
+--select (case when 3 > (select round(dbms_random.value(1,7),0) from dual)  then 'TRUE' Else 'FALSE' END) from dual;                
 exit;
 EOF
 )
@@ -322,7 +322,7 @@ fi
 
 verify_lockfile()
 {
-if [ -f $lock_file ]
+if [ ! -f $lock_file ]
 then
    echo "DG Lockfile $lock_file not exists" >> $log_file
    echo "No Further action required" >> $log_file
@@ -342,7 +342,7 @@ check_sync_status_in_bg()
 #main
 dg_lock=`verify_lockfile`
 echo $dg_lock
-if [ "$1" = "Success" ]; then
+if [ "$dg_lock" = "Success" ]; then
         exit 0
 fi
 
