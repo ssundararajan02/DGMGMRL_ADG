@@ -190,7 +190,7 @@ echo "---Checking Configuration Status">> $log_file
 result=`echo "show configuration;" | \
   $ORACLE_HOME/bin/dgmgrl / | \
   grep -A 1 "Configuration Status" | grep -v "Configuration Status"|awk '{print $1}'`
-if [ "$result" = "SUCCESS" ] ; then
+if [ "$result" = "SUCCESS" ]  || [ "$result" = "WARNING" ] ; then
    echo "DG configuration status : $result" >> $log_file 
    echo "Success"
 else

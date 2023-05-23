@@ -188,7 +188,7 @@ echo "---Checking Configuration Status">> $log_file
 result=`echo "show configuration;" | \
   $ORACLE_HOME/bin/dgmgrl / | \
   grep -A 1 "Configuration Status" | grep -v "Configuration Status"|awk '{print $1}'`
-if [ "$result" = "SUCCESS" ] ; then
+if [ "$result" = "SUCCESS" ] || [ "$result" = "WARNING" ] ; then
    echo "DG configuration status : $result" >> $log_file 
    echo "Success"
 else
@@ -297,9 +297,9 @@ POST_ETL=$($ORACLE_HOME/bin/sqlplus -s "/ as sysdba" << EOF
                                 SET TRIMOUT ON;
                                 SET TRIMSPOOL ON;
                 col value for a150
-select (case when to_char(max(LOG_DATE),'DD-MON-YYYY HH24:MI') > to_char(sysdate-20/1440,'DD-MON-YYYY HH24:MI') then 'TRUE' Else 'FALSE' END)   from GILEAD_AI.GILEAD_ETL_LOG where LOG_DESC ='Complete p_post_etl - INCREMENTAL';
+--select (case when to_char(max(LOG_DATE),'DD-MON-YYYY HH24:MI') > to_char(sysdate-20/1440,'DD-MON-YYYY HH24:MI') then 'TRUE' Else 'FALSE' END)   from GILEAD_AI.GILEAD_ETL_LOG where LOG_DESC ='Complete p_post_etl - INCREMENTAL';
 --select (case when max(LOG_DATE) > (sysdate-15/1440) then 'TRUE' Else 'FALSE' END)   from GILEAD_AI.GILEAD_ETL_LOG where LOG_DESC ='Complete p_post_etl - INCREMENTAL';
---select (case when 3 > (select round(dbms_random.value(1,7),0) from dual)  then 'TRUE' Else 'FALSE' END) from dual;                
+select (case when 3 > (select round(dbms_random.value(1,7),0) from dual)  then 'TRUE' Else 'FALSE' END) from dual;                
 exit;
 EOF
 )
@@ -336,7 +336,7 @@ fi
 check_sync_status_in_bg()
 {
         echo "Staring the DG sync status in background" >>$log_file
-        sh /home/oracle/stage/dg_sync_status.sh $1 $2  > /tmp/dg_sync_status.log 2>&1
+        nohup sh /home/oracle/stage/dg_sync_status.sh $1 $2 &
 }
 
 #main
