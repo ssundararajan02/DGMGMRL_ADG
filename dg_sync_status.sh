@@ -10,6 +10,7 @@ export log_file="$log_dir/$1_dg_sync_status_$DATE.log"
 export PATH=/usr/local/bin:$PATH
 export ORATAB='/etc/oratab'
 export EMAILLIST='suresh.sundararajan@gilead.com'
+export RUN_APP_PKG=true
 prereq_check()
 {
 if [ $# -ne 2 ]; then
@@ -45,6 +46,9 @@ if [ "$1" != "Success" ]; then
 #               mailx -s "ARGUS Export Job $DT completed sccessfully" $EMAILLIST1
                 echo -e "$ORACLE_SID DR is SYNC \n $msg \n log_file attached" | \
                      mutt -s "$ORACLE_SID DR is SYNC - $DATE"  -a $log_file  -- $EMAILLIST
+                if [[ "$RUN_APP_PKG" == true ]]; then
+                        run_app_script
+                fi
         else echo "---`date +%d%m%Y:%H%M%S` Proceeding with next step" >> $log_file
 fi
 }
@@ -118,6 +122,27 @@ else
 fi
 }
 
+run_app_script()
+{
+$ORACLE_HOME/bin/sqlplus -s "/ as sysdba" << EOF >>$log_file
+                set pages 0 lin 150 feed off ver off head off echo off;
+                SET TRIMOUT ON;
+                SET TRIMSPOOL ON;
+                col value for a150
+                BEGIN
+                        GILEAD_AI.P_REPLICATION_VERIFICATION();
+                END;
+                /
+exit;
+EOF
+
+if [[ $? = 0 ]] ; then
+echo "GILEAD_AIT.P_REPLICATION_VERIFICATION Executed successfully" >> $log_file
+else
+echo "GILEAD_AIT.P_REPLICATION_VERIFICATION Executed successfully" >> $log_file
+fi
+}
+
 
 
 #main
@@ -140,7 +165,7 @@ dr_lag=`echo $dr_sync_status|awk '{print $2}'`
 dg_sync
 for i in {1..15}
 do
-	if [[ "$dr_lag" == "NoLag" ]]; then 
+	if [[ "$dr_lag" == "NoLag" ]]; then
 	notify "Success" "$dr_lag"
 	notify "Success" "END"
         break
