@@ -124,6 +124,8 @@ fi
 
 run_app_script()
 {
+echo "---`date '+%Y%m%d_%H%M%S'`">> $log_file
+echo "---Executing GILEAD_AI.P_REPLICATION_VERIFICATION">> $log_file
 $ORACLE_HOME/bin/sqlplus -s "/ as sysdba" << EOF >>$log_file
                 set pages 0 lin 150 feed off ver off head off echo off;
                 SET TRIMOUT ON;
@@ -137,9 +139,13 @@ exit;
 EOF
 
 if [[ $? = 0 ]] ; then
-echo "GILEAD_AIT.P_REPLICATION_VERIFICATION Executed successfully" >> $log_file
+echo "---`date '+%Y%m%d_%H%M%S'`">> $log_file
+echo "---GILEAD_AI.P_REPLICATION_VERIFICATION Executed successfully" >> $log_file
+echo "---`date '+%Y%m%d_%H%M%S'`">> $log_file
 else
-echo "GILEAD_AIT.P_REPLICATION_VERIFICATION Executed successfully" >> $log_file
+echo "---`date '+%Y%m%d_%H%M%S'`">> $log_file
+echo "---Error in executing GILEAD_AI.P_REPLICATION_VERIFICATION" >> $log_file
+echo "---`date '+%Y%m%d_%H%M%S'`">> $log_file
 fi
 }
 
