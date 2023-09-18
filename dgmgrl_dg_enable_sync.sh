@@ -279,6 +279,10 @@ export adglog="$log_dir/adglog_`date '+%Y%m%d:%H%M%S'`.log"
 echo "---`date '+%Y%m%d:%H%M%S'`">> $log_file
 echo "---Disable ADG SYNC ">> $log_file
 $ORACLE_HOME/bin/dgmgrl / "edit database '$1' set state='apply-on';" > $adglog
+echo "---`date '+%Y%m%d:%H%M%S'`">> $log_file
+echo "---Logswitch ADG SYNC ">> $log_file
+$ORACLE_HOME/bin/dgmgrl / "sql 'ALTER SYSTEM SWITCH LOGFILE';">> $log_file
+$ORACLE_HOME/bin/dgmgrl / "sql 'ALTER SYSTEM SWITCH LOGFILE';">> $log_file
 adg_status=`cat $adglog|grep -w Succeeded |tr -d \,|wc -l`
 
 if [ $adg_status = 1 ];then
