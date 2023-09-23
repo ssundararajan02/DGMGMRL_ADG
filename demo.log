@@ -1,0 +1,75 @@
+---20230923:083246
+---Checking Standby Apply SYNC State
+Apply Lag: 45 minutes 36 seconds (computed 1 second ago)
+DR Apply Lag Time
+  Apply Lag:          45 minutes 36 seconds (computed 1 second ago)
+---20230923:083923
+---Checking Standby Apply SYNC State
+Apply Lag: 52 minutes 14 seconds (computed 1 second ago)
+DR Apply Lag Time
+  Apply Lag:          52 minutes 14 seconds (computed 1 second ago)
+---20230923:090110
+---Checking Standby Apply SYNC State
+Apply Lag: 1 hour(s) 14 minutes (computed 1 second ago)
+DR Apply Lag Time
+  Apply Lag:          1 hour(s) 14 minutes (computed 1 second ago)
+---20230923:090240
+---Checking Standby Apply SYNC State
+Apply Lag: 1 hour(s) 15 minutes 31 seconds (computed 0 seconds ago)
+DR Apply Lag Time
+  Apply Lag:          1 hour(s) 15 minutes 31 seconds (computed 0 seconds ago)
+---20230923:090323
+---Checking Standby Apply SYNC State
+Apply Lag: 1 hour(s) 16 minutes 13 seconds (computed 0 seconds ago)
+DR Apply Lag Time
+  Apply Lag:          1 hour(s) 16 minutes 13 seconds (computed 0 seconds ago)
+---20230923:090408
+---Checking Standby Apply SYNC State
+Apply Lag: 1 hour(s) 16 minutes 58 seconds (computed 0 seconds ago)
+DR Apply Lag Time
+  Apply Lag:          1 hour(s) 16 minutes 58 seconds (computed 0 seconds ago)
+---20230923:090410
+---Checking Standby Apply SYNC State
+Apply Lag: 1 hour(s) 17 minutes (computed 1 second ago)
+DR Apply Lag Time
+  Apply Lag:          1 hour(s) 17 minutes (computed 1 second ago)
+---20230923:090412
+---Checking Standby Apply SYNC State
+Apply Lag: 0 seconds (computed 0 seconds ago)
+DR Apply Lag Time
+  Apply Lag:          0 seconds (computed 0 seconds ago)
+---20230923:090523
+---Checking Standby Apply SYNC State
+Apply Lag: 41 seconds (computed 0 seconds ago)
+DR Apply Lag Time
+  Apply Lag:          41 seconds (computed 0 seconds ago)
+---20230923:090637
+---Checking Standby Apply SYNC State
+Apply Lag: 1 minute 55 seconds (computed 0 seconds ago)
+DR Apply Lag Time
+  Apply Lag:          1 minute 55 seconds (computed 0 seconds ago)
+---20230923:090652
+---Checking Standby Apply SYNC State
+Apply Lag: 2 minutes 9 seconds (computed 1 second ago)
+DR Apply Lag Time
+  Apply Lag:          2 minutes 9 seconds (computed 1 second ago)
+---20230923:091003
+---Checking Standby Apply SYNC State
+Apply Lag: 5 minutes 21 seconds (computed 0 seconds ago)
+DR Apply Lag Time
+  Apply Lag:          5 minutes 21 seconds (computed 0 seconds ago)
+---20230923:091019
+---Checking Standby Apply SYNC State
+Apply Lag: 5 minutes 36 seconds (computed 0 seconds ago)
+DR Apply Lag Time
+  Apply Lag:          5 minutes 36 seconds (computed 0 seconds ago)
+---20230923:091057
+---Checking Standby Apply SYNC State
+Apply Lag: 6 minutes 15 seconds (computed 1 second ago)
+DR Apply Lag Time
+  Apply Lag:          6 minutes 15 seconds (computed 1 second ago)
+---20230923:091110
+---Checking Standby Apply SYNC State
+Apply Lag: 6 minutes 27 seconds (computed 0 seconds ago)
+DR Apply Lag Time
+  Apply Lag:          6 minutes 27 seconds (computed 0 seconds ago)

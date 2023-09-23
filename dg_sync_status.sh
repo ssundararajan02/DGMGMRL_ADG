@@ -111,10 +111,10 @@ echo "DR Apply Lag Time" >> $log_file
 echo "$lag_value" >> $log_file
 
 
-if [[ "$time_param" == "hour*" && "$time_value" -ge 0 ]]
+if [[ "$time_param" == hour* && "$time_value" -ge 0 ]]
 then
 echo "Error" "$time_param" 
-elif [[ "$time_param" == "minute*" && "$time_value" -ge 5 ]]
+elif [[ "$time_param" == minute* && "$time_value" -ge 5 ]]
 then
 echo "Error" "$time_param" 
 else 
@@ -175,10 +175,10 @@ do
 	notify "Success" "$dr_lag"
 	notify "Success" "END"
         break
-	elif [[ "$dr_lag" == "hour*" ]]; then
+	elif [[ "$dr_lag" == hour* ]]; then
 	sleep 300 
 	dg_sync
-	elif [[ "$dr_lag" == "minute*" ]]; then
+	elif [[ "$dr_lag" == minute* ]]; then
 	sleep 120 
 	dg_sync
 	fi

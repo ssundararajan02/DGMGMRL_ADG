@@ -260,12 +260,13 @@ echo "DR Apply Lag Time" >> $log_file
 echo "$lag_value" >> $log_file
 if [[ "$time_param" == "hour(s)" && "$time_value" -ge 0 ]]
 then
- if [[ "$time_param" == "minutes" && "$time_value" -ge 16 ]]
- then
-	echo "Error" "$lag_value" 
- else
-	echo "Success" "NoLag"
- fi
+        echo "Error" "$lag_value"
+elif [[ "$time_param" == "minutes" && "$time_value" -ge 16 ]]
+then
+        echo "Error" "$lag_value" 
+else
+        echo "Success" "NoLag"
+
 fi
 }
 
