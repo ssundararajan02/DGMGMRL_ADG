@@ -10,7 +10,8 @@ export log_file="$log_dir/$1_dg_enable_sync_$DATE.log"
 export lock_file="$script_dir/dg_sync_$ORACLE_SID.lock"
 export PATH=/usr/local/bin:$PATH
 export ORATAB='/etc/oratab'
-export EMAILLIST='suresh.sundararajan@gilead.com'
+#export EMAILLIST='suresh.sundararajan@gilead.com'
+export EMAILLIST='nandakumar.amarnath@gilead.com,SivaSankar.Chandran@gilead.com,Lingesan.Jeyapandy@gilead.com,suresh.sundararajan@gilead.com'
 prereq_check()
 {
 if [ $# -ne 2 ]; then
@@ -258,15 +259,18 @@ time_param=`echo "$lag_value"|cut -d " " -f 15`
 echo $lag_value 
 echo "DR Apply Lag Time" >> $log_file
 echo "$lag_value" >> $log_file
+
 if [[ "$time_param" == "hour(s)" && "$time_value" -ge 0 ]]
 then
-        echo "Error" "$lag_value"
-elif [[ "$time_param" == "minutes" && "$time_value" -ge 16 ]]
+    echo "Error" "$lag_value"
+elif [[ "$time_param" == minute* && "$time_value" -ge 16 ]]
 then
-        echo "Error" "$lag_value" 
+    echo "Error" "$lag_value" 
+elif [[ "$time_param" == minute* && "$time_value" -le 2 ]]
+then
+    echo "Success" "NoLag"
 else
-        echo "Success" "NoLag"
-
+    echo "Error" "$lag_value"     
 fi
 }
 
@@ -386,16 +390,22 @@ if [[ "$etl_stat" = "TRUE" ]] ; then
 		notify $adg_enable "Enable DR SYNC"
 		echo "Removing lock file $lock_file" >> $log_file
 		rm $lock_file
+                sleep 90 # Adding this to avoid DG config shows unknown status
 	        dg_lag=`dg_sync_stat $ADG_NAME`
 	        echo "Apply Lag status $dg_lag" >>$log_file
                 check_sync_status_in_bg $1 $ADG_NAME
 # sh /home/oracle/scripts/dg_sync_status_12c.sh $1 $2 &
 		notify $adg_enable "END"
-	else
-		echo "DR Replication is already enabled :-> $dg_check_apply" >> $log_file
+        elif [[ "$dg_check_apply" = "APPLY-ON" ]] ; then
+                echo "DR Replication is already enabled :-> $dg_check_apply" >> $log_file
 		dg_lag=`dg_sync_stat $ADG_NAME`
 		echo "Apply Lag status $dg_lag" >>$log_file
 		notify "Error" "DR is already enabled"
+	else
+		echo "Error in DB replication status :-> $dg_check_apply" >> $log_file
+		dg_lag=`dg_sync_stat $ADG_NAME`
+		echo "Apply Lag status $dg_lag" >>$log_file
+		notify "Error" "Error in replication state"
 	fi
 else
 	echo "---`date '+%Y%m%d:%H%M%S'`">> $log_file

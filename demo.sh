@@ -13,16 +13,21 @@ time_param=`echo "$lag_value"|cut -d " " -f 15`
 echo $lag_value 
 echo "DR Apply Lag Time" >> $log_file
 echo "$lag_value" >> $log_file
+# if [[ "$time_value" == "(unknown)" ]]
+# then
+#     echo "Error" "$lag_value" 
 if [[ "$time_param" == "hour(s)" && "$time_value" -ge 0 ]]
 then
     echo "Error" "$lag_value"
-elif [[ "$time_param" == minute* && "$time_value" -ge 1 ]]
+elif [[ "$time_param" == minute* && "$time_value" -ge 16 ]]
 then
     echo "Error" "$lag_value" 
+elif [[ "$time_param" == minute* && "$time_value" -ge 1 ]]
+then
+    echo "Success" "NoLag"
 else
-	    echo "Success" "NoLag"
+    echo "Error" "$lag_value"     
 fi
-
 }
 
 dg_lag=`dg_sync_stat $ADG_NAME`

@@ -9,7 +9,8 @@ export log_dir="$script_dir/log"
 export log_file="$log_dir/$1_dg_sync_status_$DATE.log"
 export PATH=/usr/local/bin:$PATH
 export ORATAB='/etc/oratab'
-export EMAILLIST='suresh.sundararajan@gilead.com'
+#export EMAILLIST='suresh.sundararajan@gilead.com'
+export EMAILLIST='nandakumar.amarnath@gilead.com,SivaSankar.Chandran@gilead.com,Lingesan.Jeyapandy@gilead.com,suresh.sundararajan@gilead.com'
 export RUN_APP_PKG=true
 prereq_check()
 {
@@ -110,15 +111,17 @@ time_param=`echo "$lag_value"|cut -d " " -f 15`
 echo "DR Apply Lag Time" >> $log_file
 echo "$lag_value" >> $log_file
 
-
-if [[ "$time_param" == hour* && "$time_value" -ge 0 ]]
+if [[ "$time_param" == "hour(s)" && "$time_value" -ge 0 ]]
 then
-echo "Error" "$time_param" 
-elif [[ "$time_param" == minute* && "$time_value" -ge 5 ]]
+    echo "Error" "$lag_value"
+elif [[ "$time_param" == minute* && "$time_value" -ge 16 ]]
 then
-echo "Error" "$time_param" 
-else 
-	echo "Success" "NoLag"
+    echo "Error" "$lag_value" 
+elif [[ "$time_param" == minute* && "$time_value" -le 2 ]]
+then
+    echo "Success" "NoLag"
+else
+    echo "Error" "$lag_value"     
 fi
 }
 

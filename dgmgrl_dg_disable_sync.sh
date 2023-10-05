@@ -10,7 +10,8 @@ export log_file="$log_dir/$1_dg_disable_sync_$DATE.log"
 export lock_file="$script_dir/dg_sync_$ORACLE_SID.lock"
 export PATH=/usr/local/bin:$PATH
 export ORATAB='/etc/oratab'
-export EMAILLIST='suresh.sundararajan@gilead.com'
+#export EMAILLIST='suresh.sundararajan@gilead.com'
+export EMAILLIST='nandakumar.amarnath@gilead.com,SivaSankar.Chandran@gilead.com,Lingesan.Jeyapandy@gilead.com,suresh.sundararajan@gilead.com'
 prereq_check()
 {
 if [ $# -ne 2 ]; then
@@ -262,12 +263,15 @@ echo "DR Apply Lag Time" >> $log_file
 echo "$lag_value" >> $log_file
 if [[ "$time_param" == "hour(s)" && "$time_value" -ge 0 ]]
 then
- if [[ "$time_param" == "minutes" && "$time_value" -ge 16 ]]
- then
-	echo "Error" "$lag_value" 
- else
-	echo "Success" "No Lag"
- fi
+    echo "Error" "$lag_value"
+elif [[ "$time_param" == minute* && "$time_value" -ge 16 ]]
+then
+    echo "Error" "$lag_value" 
+elif [[ "$time_param" == minute* && "$time_value" -le 2 ]]
+then
+    echo "Success" "NoLag"
+else
+    echo "Error" "$lag_value"     
 fi
 }
 
@@ -322,11 +326,16 @@ if [[ "$dg_check_apply" = "APPLY-ON" ]] ; then
 	echo $adg_disable
 	notify $adg_disable "Disable DR SYNC"
 	notify $adg_disable "END"
-else
+elif [[ "$dg_check_apply" = "APPLY-OFF" ]] ; then
 	echo "DR Replication is already disabled :-> $dg_check_apply" >> $log_file
 	dg_lag=`dg_sync_stat $ADG_NAME`
 	echo "Apply Lag status $dg_lag" >>$log_file
 	notify "Error" "DR is already disabled"
+else
+	echo "Error in Replication state :-> $dg_check_apply" >> $log_file
+	dg_lag=`dg_sync_stat $ADG_NAME`
+	echo "Apply Lag status $dg_lag" >>$log_file
+	notify "Error" "Error in DB replication status"
 fi
 
 #END
